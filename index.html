@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado: Fundamentos de Redes</title>
+    <style>
+        :root {
+            --bg-color: #0b1120;
+            --card-bg: #131c31;
+            --primary: #0ea5e9;
+            --primary-hover: #0284c7;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --border-card: #1e3a8a40;
+            --success: #22c55e;
+            --success-bg: #052e1680;
+            --danger: #ef4444;
+            --danger-bg: #450a0a80;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #1e293b;
+            margin-bottom: 20px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .question-badge {
+            display: inline-block;
+            background-color: #1e293b;
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+
+        .question-title {
+            font-size: 1.05rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .option-item {
+            background-color: #1a253b;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .option-item:hover {
+            border-color: var(--primary);
+            background-color: #1e293b;
+        }
+
+        .option-item.selected {
+            border-color: var(--primary);
+            background-color: #172554;
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        .option-letter {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            flex-shrink: 0;
+            border: 1px solid #334155;
+        }
+
+        .option-item.selected .option-letter {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Tela de Resultados */
+        .result-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .score-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            background-color: #0f172a;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            background-color: #1a253b;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .stat-box span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stat-box strong {
+            font-size: 1.4rem;
+        }
+
+        .stat-box.correct strong { color: var(--success); }
+        .stat-box.incorrect strong { color: var(--danger); }
+
+        .review-section-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: var(--text-main);
+        }
+
+        .review-box {
+            background-color: #162032;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border: 1px solid #334155;
+            font-size: 0.88rem;
+        }
+
+        .review-box.correct { border-color: #166534; background-color: var(--success-bg); }
+        .review-box.incorrect { border-color: #991b1b; background-color: var(--danger-bg); }
+
+        .review-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .review-box.correct .review-badge { background-color: #14532d; color: #4ade80; }
+        .review-box.incorrect .review-badge { background-color: #7f1d1d; color: #f87171; }
+
+        .explanation {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- TELA 1: INÍCIO -->
+    <div id="screen-start" class="screen active card">
+        <header>
+            <h1>Simulado: Fundamentos de Redes</h1>
+            <p>Baseado estritamente na obra de Edemilson Bay e Paulo Henrique Bluning (UNIASSELVI)</p>
+        </header>
+        <p style="margin-bottom: 24px; color: var(--text-muted); font-size: 0.9rem;">
+            Teste seus conhecimentos com questões aleatórias e visualize explicações detalhadas para correção e aprendizado ao final.
+        </p>
+        <button class="btn" onclick="startQuiz()">Iniciar Simulado</button>
+    </div>
+
+    <!-- TELA 2: QUIZ -->
+    <div id="screen-quiz" class="screen card">
+        <header style="margin-bottom: 10px;">
+            <h1>Simulado: Fundamentos de Redes</h1>
+            <p>Baseado estritamente na obra de Edemilson Bay e Paulo Henrique Bluning (UNIASSELVI)</p>
+        </header>
+        <div class="question-badge" id="q-num">Questão 1 de 10</div>
+        <div class="question-title" id="q-title">Carregando pergunta...</div>
+        <ul class="options-list" id="q-options"></ul>
+        <button class="btn" id="btn-next" onclick="nextQuestion()" disabled>Próxima Questão</button>
+    </div>
+
+    <!-- TELA 3: RESULTADOS E CORREÇÃO -->
+    <div id="screen-result" class="screen card">
+        <div class="result-header">
+            <div class="score-circle" id="res-percentage">0%</div>
+            <h2 style="font-size: 1.3rem; margin-bottom: 6px;">Simulado Finalizado!</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">
+                Confira abaixo seu desempenho e o estudo detalhado dos erros para correção e aprendizado.
+            </p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box correct">
+                <span>Acertos</span>
+                <strong id="stat-correct">0</strong>
+            </div>
+            <div class="stat-box incorrect">
+                <span>Erros</span>
+                <strong id="stat-incorrect">0</strong>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <button class="btn" onclick="startQuiz()">Gerar Novo Simulado</button>
+        </div>
+
+        <div class="review-section-title">Relatório Detalhado de Revisão e Estudo:</div>
+        <div id="review-list" style="max-height: 400px; overflow-y: auto; padding-right: 4px;"></div>
+    </div>
+</div>
+
+<script>
+    const questionBank = [
+        {
+            q: "No modelo genérico de comunicação de dados, qual elemento é responsável por converter a informação em uma forma de sinal adequada para ser transportada pela rede?",
+            options: ["Fonte", "Transmissor", "Receptor", "Destinatário"],
+            correct: 1,
+            explanation: "O transmissor converte a informação gerada pela fonte em sinal adequado (modulação ou codificação) para o meio físico."
+        },
+        {
+            q: "Sobre os tipos de sinais utilizados nas redes de comunicação, assinale a alternativa CORRETA:",
+            options: [
+                "O sinal analógico possui variações discretas e finitas de amplitude.",
+                "O sinal digital possui variações contínuas de amplitude ao longo do tempo.",
+                "O sinal digital binário assume somente duas possibilidades de amplitude (0 ou 1), sendo discreto.",
+                "Sinais digitais não podem assumir valores de tensão negativos sob hipótese alguma."
+            ],
+            correct: 2,
+            explanation: "O sinal digital binário opera em dois níveis discretos (0 e 1), enquanto o sinal analógico é contínuo."
+        },
+        {
+            q: "Qual número de porta padrão é amplamente utilizado pelo protocolo web seguro HTTPS?",
+            options: ["Porta 21", "Porta 80", "Porta 443", "Porta 25"],
+            correct: 2,
+            explanation: "A porta 443 é o padrão designado para conexões seguras utilizando o protocolo HTTPS (HTTP sobre TLS/SSL)."
+        },
+        {
+            q: "Qual técnica de multiplexação divide a largura de banda total do canal de transmissão em vários canais de frequências distintas, sendo ideal para sinais analógicos?",
+            options: ["TDM Síncrono", "TDM Estatístico", "FDM (Frequency Division Multiplexing)", "WDM"],
+            correct: 2,
+            explanation: "O FDM divide a largura de banda em faixas de frequência separadas para múltiplos fluxos analógicos."
+        },
+        {
+            q: "Qual foi a primeira rede precursora da Internet implementada em 1969 pela ARPA, interligando inicialmente quatro nós?",
+            options: ["NSFNET", "ARPAnet", "Ethernet", "BITNET"],
+            correct: 1,
+            explanation: "A ARPAnet foi criada em 1969 pelo Departamento de Defesa dos EUA, sendo a base conceitual da Internet."
+        },
+        {
+            q: "No que tange à abrangência geográfica, como são chamadas as redes que interligam computadores e dispositivos em um único prédio ou campus?",
+            options: ["PAN (Personal Area Networks)", "LAN (Local Area Networks)", "MAN (Metropolitan Area Networks)", "WAN (Wide Area Networks)"],
+            correct: 1,
+            explanation: "As redes LAN cobrem áreas geográficas restritas, como uma sala, escritório, prédio ou campus."
+        },
+        {
+            q: "Qual topologia física de rede caracteriza-se por ter cada computador conectado de forma independente a um equipamento central concentrador (Switch)?",
+            options: ["Topologia em Barramento (Bus)", "Topologia em Anel", "Topologia em Estrela", "Topologia em Malha (Mesh)"],
+            correct: 2,
+            explanation: "Na topologia em estrela, os nós comunicam-se através de um equipamento central dedicado (Switch ou Hub)."
+        },
+        {
+            q: "Sobre os meios físicos guiados, qual cabo utiliza pares de fios de cobre entrelaçados em hélice para minimizar interferências eletromagnéticas?",
+            options: ["Cabo Coaxial", "Cabo de Par Trançado (UTP/STP)", "Fibra Óptica Monomodo", "Cabo Paralelo Simples"],
+            correct: 1,
+            explanation: "O entrelaçamento helicoidal dos pares de fios reduz drasticamente o acoplamento de ruídos eletromagnéticos externos."
+        },
+        {
+            q: "Qual é a principal função de um Roteador em uma arquitetura de redes?",
+            options: [
+                "Repetir e amplificar sinais elétricos brutos bit a bit na camada física.",
+                "Interligar redes distintas (como redes WAN/Internet) e determinar a rota mais eficiente para os pacotes.",
+                "Armazenar arquivos locais compartilhados na rede interna.",
+                "Realizar tradução e conversão direta de nomes de domínios em endereços físicos MAC."
+            ],
+            correct: 1,
+            explanation: "O roteador atua na Camada de Rede (Camada 3), encaminhando pacotes entre redes diferentes baseando-se em rotas."
+        },
+        {
+            q: "Qual camada do modelo OSI é responsável pela conexão 'fim a fim', garantindo a entrega confiável, íntegra e sequenciada dos dados entre origem e destino?",
+            options: ["Camada Física", "Camada de Enlace", "Camada de Rede", "Camada de Transporte"],
+            correct: 3,
+            explanation: "A camada de Transporte assegura a entrega ponta a ponta sem erros, utilizando mecanismos de controle e confirmação (ex: TCP)."
+        },
+        {
+            q: "No protocolo IP versão 4 (IPv4), quantos bits compõem um endereço IP completo?",
+            options: ["16 bits", "32 bits", "64 bits", "128 bits"],
+            correct: 1,
+            explanation: "O IPv4 possui 32 bits divididos em quatro octetos (cada um variando de 0 a 255)."
+        },
+        {
+            q: "Em relação aos sentidos de transmissão, como é classificada a comunicação em que os dois dispositivos trocam dados simultaneamente em ambos os sentidos (bidirecional pleno)?",
+            options: ["Simplex", "Half-duplex", "Full-duplex", "Multiponto"],
+            correct: 2,
+            explanation: "No modo Full-duplex, a transmissão e a recepção de dados ocorrem em ambos os sentidos ao mesmo tempo."
+        }
+    ];
+
+    let currentQuiz = [], currentIndex = 0, userAnswers = [];
+
+    function startQuiz() {
+        currentQuiz = [...questionBank].sort(() => 0.5 - Math.random()).slice(0, 10);
+        currentIndex = 0;
+        userAnswers = [];
+        document.getElementById('screen-start').classList.remove('active');
+        document.getElementById('screen-result').classList.remove('active');
+        document.getElementById('screen-quiz').classList.add('active');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        let q = currentQuiz[currentIndex];
+        document.getElementById('q-num').innerText = `Questão ${currentIndex + 1} de 10`;
+        document.getElementById('q-title').innerText = q.q;
+        
+        let opts = document.getElementById('q-options');
+        opts.innerHTML = '';
+        
+        const letters = ['A', 'B', 'C', 'D'];
+        q.options.forEach((opt, idx) => {
+            let li = document.createElement('li');
+            li.className = 'option-item';
+            li.innerHTML = `<div class="option-letter">${letters[idx]}</div> <span>${opt}</span>`;
+            li.onclick = () => {
+                document.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
+                li.classList.add('selected');
+                userAnswers[currentIndex] = idx;
+                document.getElementById('btn-next').disabled = false;
+            };
+            opts.appendChild(li);
+        });
+        document.getElementById('btn-next').disabled = true;
+    }
+
+    function nextQuestion() {
+        currentIndex++;
+        if (currentIndex < currentQuiz.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        document.getElementById('screen-quiz').classList.remove('active');
+        document.getElementById('screen-result').classList.add('active');
+
+        let correctCount = 0;
+        let reviewHTML = '';
+        const letters = ['A', 'B', 'C', 'D'];
+
+        currentQuiz.forEach((q, idx) => {
+            let userAns = userAnswers[idx];
+            let isCorrect = userAns === q.correct;
+            if (isCorrect) correctCount++;
+
+            let userOptText = userAns !== undefined ? `${letters[userAns]}) ${q.options[userAns]}` : 'Não respondida';
+            let correctOptText = `${letters[q.correct]}) ${q.options[q.correct]}`;
+
+            reviewHTML += `
+                <div class="review-box ${isCorrect ? 'correct' : 'incorrect'}">
+                    <div class="review-badge">${isCorrect ? `Questão ${idx + 1} - Acertou` : `Questão ${idx + 1} - Errou`}</div>
+                    <div style="font-weight: 500; margin-bottom: 8px;">${q.q}</div>
+                    <div style="font-size: 0.82rem; line-height: 1.4;">
+                        <strong>Sua resposta:</strong> <span style="color: ${isCorrect ? '#4ade80' : '#f87171'}">${userOptText}</span><br>
+                        ${!isCorrect ? `<strong>Resposta correta:</strong> <span style="color: #4ade80">${correctOptText}</span><br>` : ''}
+                    </div>
+                    <div class="explanation">💡 <strong>Estudo e Explicação do Conteúdo (Livro Base):</strong> ${q.explanation}</div>
+                </div>
+            `;
+        });
+
+        let incorrectCount = 10 - correctCount;
+        let percentage = Math.round((correctCount / 10) * 100);
+        
+        document.getElementById('res-percentage').innerText = `${percentage}%`;
+        document.getElementById('stat-correct').innerText = correctCount;
+        document.getElementById('stat-incorrect').innerText = incorrectCount;
+        document.getElementById('review-list').innerHTML = reviewHTML;
+    }
+</script>
+
+</body>
+</html>
