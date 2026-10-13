@@ -13,7 +13,6 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border-color: #1e293b;
-            --border-card: #1e3a8a40;
             --success: #22c55e;
             --success-bg: #052e1680;
             --danger: #ef4444;
@@ -25,6 +24,7 @@
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -113,11 +113,11 @@
             gap: 14px;
             font-size: 0.95rem;
             color: var(--text-main);
+            user-select: none;
         }
 
-        .option-item:hover {
-            border-color: var(--primary);
-            background-color: #1e293b;
+        .option-item:active {
+            transform: scale(0.98);
         }
 
         .option-item.selected {
@@ -156,7 +156,7 @@
             font-weight: 600;
             border-radius: 14px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, opacity 0.2s;
             width: 100%;
             text-align: center;
         }
@@ -170,7 +170,6 @@
             cursor: not-allowed;
         }
 
-        /* Tela de Resultados */
         .result-header {
             text-align: center;
             margin-bottom: 24px;
@@ -266,19 +265,17 @@
 <body>
 
 <div class="container">
-    <!-- TELA 1: INÍCIO -->
     <div id="screen-start" class="screen active card">
         <header>
             <h1>Simulado: Fundamentos de Redes</h1>
             <p>Baseado estritamente na obra de Edemilson Bay e Paulo Henrique Bluning (UNIASSELVI)</p>
         </header>
         <p style="margin-bottom: 24px; color: var(--text-muted); font-size: 0.9rem;">
-            Teste seus conhecimentos com questões aleatórias e visualize explicações detalhadas para correção e aprendizado ao final.
+            Banco massivo expandido com 40 questões técnicas. Teste seus conhecimentos e estude os erros detalhadamente ao final!
         </p>
-        <button class="btn" onclick="startQuiz()">Iniciar Simulado</button>
+        <button class="btn" id="btn-start">Iniciar Simulado</button>
     </div>
 
-    <!-- TELA 2: QUIZ -->
     <div id="screen-quiz" class="screen card">
         <header style="margin-bottom: 10px;">
             <h1>Simulado: Fundamentos de Redes</h1>
@@ -287,10 +284,9 @@
         <div class="question-badge" id="q-num">Questão 1 de 10</div>
         <div class="question-title" id="q-title">Carregando pergunta...</div>
         <ul class="options-list" id="q-options"></ul>
-        <button class="btn" id="btn-next" onclick="nextQuestion()" disabled>Próxima Questão</button>
+        <button class="btn" id="btn-next" disabled>Próxima Questão</button>
     </div>
 
-    <!-- TELA 3: RESULTADOS E CORREÇÃO -->
     <div id="screen-result" class="screen card">
         <div class="result-header">
             <div class="score-circle" id="res-percentage">0%</div>
@@ -312,7 +308,7 @@
         </div>
 
         <div style="margin-bottom: 20px;">
-            <button class="btn" onclick="startQuiz()">Gerar Novo Simulado</button>
+            <button class="btn" id="btn-restart">Gerar Novo Simulado (Outras Perguntas)</button>
         </div>
 
         <div class="review-section-title">Relatório Detalhado de Revisão e Estudo:</div>
@@ -403,18 +399,213 @@
             options: ["Simplex", "Half-duplex", "Full-duplex", "Multiponto"],
             correct: 2,
             explanation: "No modo Full-duplex, a transmissão e a recepção de dados ocorrem em ambos os sentidos ao mesmo tempo."
+        },
+        {
+            q: "Qual protocolo da camada de aplicação é responsável por traduzir nomes de domínios legíveis (como www.uniasselvi.com.br) em endereços IP numéricos?",
+            options: ["DHCP", "DNS (Domain Name System)", "FTP", "SMTP"],
+            correct: 1,
+            explanation: "O DNS atua como o sistema de nomes de domínio, convertendo URLs amigáveis em endereços IP roteáveis."
+        },
+        {
+            q: "O que caracteriza uma rede do tipo Ponto a Ponto (Peer-to-Peer / P2P) em comparação com Cliente/Servidor?",
+            options: [
+                "Possui um servidor central altamente dedicado que gerencia todos os acessos.",
+                "Cada estação na rede pode funcionar simultaneamente como cliente e como servidor, sem exigir um computador central dedicado.",
+                "É estritamente proibida em redes locais corporativas.",
+                "Utiliza apenas cabos de fibra óptica de longa distância."
+            ],
+            correct: 1,
+            explanation: "Nas redes P2P os nós compartilham recursos diretamente entre si de forma descentralizada."
+        },
+        {
+            q: "Qual equipamento de rede opera na Camada Física (Camada 1), amplificando e repetindo o sinal recebido em uma porta para todas as demais portas, sem filtrar tráfego?",
+            options: ["Roteador", "Switch", "Hub (Concentrador)", "Gateway de Aplicação"],
+            correct: 2,
+            explanation: "O Hub é um repetidor multiportas que repassa bits cegamente para todas as interfaces, compartilhando o domínio de colisão."
+        },
+        {
+            q: "Qual é a principal vantagem da Fibra Óptica em relação aos cabos metálicos tradicionais de par trançado?",
+            options: [
+                "Maior facilidade e menor custo de crimpagem manual de conectores.",
+                "Imunidade a interferências eletromagnéticas, menor atenuação de sinal e altíssima capacidade de largura de banda em longas distâncias.",
+                "Capacidade de alimentar eletricamente os dispositivos conectados (PoE nativo).",
+                "Ausência total de necessidade de blindagem mecânica."
+            ],
+            correct: 1,
+            explanation: "A fibra óptica transmite luz em vez de eletricidade, tornando-se imune a ruídos eletromagnéticos e permitindo altas taxas de transmissão."
+        },
+        {
+            q: "Qual protocolo da camada de aplicação é utilizado especificamente para o envio e transferência de mensagens de correio eletrônico (e-mail) entre servidores?",
+            options: ["HTTP", "FTP", "SMTP (Simple Mail Transfer Protocol)", "SNMP"],
+            correct: 2,
+            explanation: "O SMTP é o protocolo padrão da camada de aplicação dedicado ao envio de e-mails."
+        },
+        {
+            q: "No modelo OSI, qual camada é responsável pela conversão dos bits de dados em sinais físicos (elétricos, ópticos ou de rádio) adequados ao meio de transmissão?",
+            options: ["Camada Física", "Camada de Enlace", "Camada de Rede", "Camada de Sessão"],
+            correct: 0,
+            explanation: "A Camada Física gerencia a transmissão dos bits brutos através do meio físico de comunicação."
+        },
+        {
+            q: "O que significa a sigla TCP em redes de computadores e qual sua principal característica?",
+            options: [
+                "Transmission Control Protocol; orientado à conexão, garantindo entrega confiável e ordenada dos pacotes.",
+                "Trivial Communication Program; não orientado à conexão e focado em alta velocidade.",
+                "Telecommunication Core Port; exclusivo para roteamento de borda.",
+                "Transfer Code Packet; utilizado apenas na camada de enlace."
+            ],
+            correct: 0,
+            explanation: "O TCP estabelece conexão prévia (handshake) e assegura que nenhum pacote seja perdido ou entregue fora de ordem."
+        },
+        {
+            q: "Qual é a função do protocolo DHCP (Dynamic Host Configuration Protocol) em uma rede local?",
+            options: [
+                "Criptografar o tráfego HTTP entre o navegador e o servidor web.",
+                "Distribuir automaticamente parâmetros de configuração de rede (como endereço IP, máscara de sub-rede e gateway) para os hosts.",
+                "Realizar a conversão de endereços MAC em endereços IP estáticos.",
+                "Executar testes de ping e latência na camada de rede."
+            ],
+            correct: 1,
+            explanation: "O DHCP automatiza a atribuição de endereços IP e configurações de rede aos dispositivos que entram na rede."
+        },
+        {
+            q: "O que caracteriza a comutação de circuitos em redes de telecomunicações?",
+            options: ["Reserva um caminho físico ou lógico exclusivo entre os nós durante toda a sessão de comunicação.", "Divide os dados em pacotes independentes que seguem rotas dinâmicas.", "Utiliza endereçamento MAC estrito na camada de enlace.", "Envia dados por broadcast sem confirmação."],
+            correct: 0,
+            explanation: "Na comutação de circuitos (como na telefonia tradicional), um canal dedicado é estabelecido e mantido exclusivo para os comunicantes durante toda a chamada."
+        },
+        {
+            q: "Qual é a principal característica da comutação de pacotes utilizada na Internet?",
+            options: ["O canal de comunicação permanece permanentemente aberto e exclusivo.", "Os dados são divididos em blocos (pacotes) que trafegam de forma independente e podem usar rotas variadas.", "Exige conexão ponto a ponto dedicada.", "Inviabiliza o compartilhamento do meio físico."],
+            correct: 1,
+            explanation: "Na comutação de pacotes, a mensagem é fragmentada em pacotes que encontram o melhor caminho dinamicamente pela rede até o destino."
+        },
+        {
+            q: "Qual camada do modelo OSI é responsável pelo roteamento de pacotes entre redes distintas e pelo endereçamento lógico (ex: IP)?",
+            options: ["Camada Física", "Camada de Enlace", "Camada de Rede", "Camada de Apresentação"],
+            correct: 2,
+            explanation: "A Camada de Rede (Camada 3) gerencia o endereçamento lógico e o roteamento dos pacotes entre redes diferentes."
+        },
+        {
+            q: "O que define a subcamada MAC (Medium Access Control) na Camada de Enlace do modelo OSI?",
+            options: ["Controla o acesso físico ao meio compartilhado de transmissão e endereçamento físico (MAC address).", "Gerencia o roteamento global de pacotes na internet.", "Realiza a conversão de sinais digitais em analógicos.", "Aplica criptografia de ponta a ponta."],
+            correct: 0,
+            explanation: "A subcamada MAC controla como os dispositivos acessam o meio físico de transmissão para evitar colisões e gerencia os endereços físicos."
+        },
+        {
+            q: "Qual protocolo da camada de transporte garante a entrega confiável e ordenada de pacotes por meio de confirmações (ACK) e controle de fluxo?",
+            options: ["UDP", "TCP (Transmission Control Protocol)", "IP", "ICMP"],
+            correct: 1,
+            explanation: "O TCP é orientado à conexão e garante confiabilidade, retransmitindo dados perdidos e ordenando os pacotes."
+        },
+        {
+            q: "Qual protocolo de transporte é não orientado à conexão, priorizando a velocidade em detrimento da garantia de entrega (ideal para streaming e VoIP)?",
+            options: ["TCP", "UDP (User Datagram Protocol)", "HTTP", "FTP"],
+            correct: 1,
+            explanation: "O UDP não estabelece handshake prévio e não realiza controle de fluxo ou retransmissão, sendo mais rápido para tempo real."
+        },
+        {
+            q: "O que significa o termo 'Atenuação' em meios físicos de transmissão de redes?",
+            options: ["Aumento excessivo da velocidade de clock.", "Perda de intensidade ou enfraquecimento do sinal à medida que ele percorre o meio físico de transmissão.", "Interferência eletromagnética gerada por motores elétricos.", "Duplicação de pacotes na camada de enlace."],
+            correct: 1,
+            explanation: "A atenuação é a degradação e enfraquecimento natural da amplitude do sinal ao longo da distância do cabo ou meio."
+        },
+        {
+            q: "Qual é a função do protocolo ARP (Address Resolution Protocol) em redes IPv4?",
+            options: ["Converter nomes de domínios em endereços IP.", "Descobrir o endereço físico (MAC address) correspondente a um determinado endereço IP na rede local.", "Atribuir endereços IP dinamicamente.", "Rotear pacotes entre diferentes sub-redes."],
+            correct: 1,
+            explanation: "O ARP faz o mapeamento entre o endereço lógico (IP) e o endereço físico da placa de rede (MAC) na mesma rede local."
+        },
+        {
+            q: "Quantos bits compõem um endereço IP versão 6 (IPv6)?",
+            options: ["32 bits", "64 bits", "128 bits", "256 bits"],
+            correct: 2,
+            explanation: "O IPv6 expandiu o espaço de endereçamento para 128 bits, resolvendo o problema de esgotamento de IPs do IPv4."
+        },
+        {
+            q: "O que é uma máscara de sub-rede em redes IPv4?",
+            options: ["Um código criptográfico de segurança contra invasões.", "Um número de 32 bits que separa o endereço IP em identificador de rede e identificador de host.", "O endereço MAC do roteador principal.", "A porta padrão de comunicação web."],
+            correct: 1,
+            explanation: "A máscara de sub-rede define quais bits do endereço IP identificam a rede e quais identificam a máquina específica."
+        },
+        {
+            q: "Qual é a principal função de um Switch em comparação a um Hub em redes locais Ethernet?",
+            options: ["O Switch encaminha quadros apenas para a porta de destino específica baseando-se no endereço MAC, segmentando o domínio de colisão.", "O Switch repete o sinal para todas as portas indiscriminadamente.", "O Switch opera exclusivamente na camada de aplicação.", "O Switch substitui completamente a necessidade de roteadores."],
+            correct: 0,
+            explanation: "O Switch aprende os endereços MAC e comuta os quadros diretamente para a porta correta, ao contrário do Hub que repassa tudo para todos."
+        },
+        {
+            q: "O que caracteriza uma rede do tipo MAN (Metropolitan Area Networks)?",
+            options: ["Abrange uma área restrita a uma única sala.", "Interliga computadores e redes locais dentro de uma mesma cidade ou região metropolitana.", "Conecta continentes inteiros através de cabos submarinos.", "Funciona exclusivamente via Bluetooth de curto alcance."],
+            correct: 1,
+            explanation: "As redes MAN cobrem áreas de porte metropolitano, interligando várias LANs em uma cidade."
+        },
+        {
+            q: "Qual é a principal utilidade do protocolo ICMP (Internet Control Message Protocol) em redes IP?",
+            options: ["Transferir arquivos grandes com segurança.", "Enviar mensagens de erro, controle e diagnóstico (como o comando ping) na camada de rede.", "Criptografar dados de navegação web.", "Gerenciar senhas de administradores de rede."],
+            correct: 1,
+            explanation: "O ICMP é usado por ferramentas de diagnóstico e relatórios de erro em redes IP, sendo a base do comando ping."
+        },
+        {
+            q: "O que é a largura de banda de um canal de comunicação analógico?",
+            options: ["A velocidade máxima de download em Megabits por segundo.", "A faixa de frequências suportada pelo canal, medida em Hertz (Hz).", "O número total de usuários conectados simultaneamente.", "A quantidade de pacotes perdidos por segundo."],
+            correct: 1,
+            explanation: "Em termos físicos e analógicos, a largura de banda representa a diferença entre a maior e a menor frequência que o canal transmite, medida em Hertz."
+        },
+        {
+            q: "Qual é a função do protocolo FTP (File Transfer Protocol)?",
+            options: ["Navegar em páginas web interativas.", "Transferir arquivos entre computadores através de uma rede de forma estruturada.", "Enviar e-mails com anexos pesados.", "Gerenciar endereços IP dinâmicos."],
+            correct: 1,
+            explanation: "O FTP é um protocolo dedicado exclusivamente à transferência de arquivos entre clientes e servidores."
+        },
+        {
+            q: "O que significa a sigla URL na internet?",
+            options: ["Universal Route Locator", "Uniform Resource Locator (Localizador Uniforme de Recursos)", "User Registered Link", "Unified Relational Language"],
+            correct: 1,
+            explanation: "URL significa Uniform Resource Locator, sendo o endereço textual utilizado para localizar recursos na internet."
+        },
+        {
+            q: "Qual é a diferença fundamental entre cabos de fibra óptica Monomodo (SMF) e Multimodo (MMF)?",
+            options: ["A Monomodo possui núcleo extremamente fino permitindo um único feixe de luz para longas distâncias; a Multimodo possui núcleo maior com múltiplos feixes para curtas distâncias.", "A Multimodo é feita de cobre trançado e a Monomodo de plástico.", "A Monomodo não necessita de luz para transmitir dados.", "Não há diferenças técnicas significativas."],
+            correct: 0,
+            explanation: "A fibra monomodo propaga um único modo de luz focado para grandes distâncias, enquanto a multimodo suporta múltiplos caminhos de luz para distâncias menores."
+        },
+        {
+            q: "O que define a topologia em Anel em redes de computadores?",
+            options: ["Todos os dispositivos conectam-se a um concentrador central.", "Os dispositivos são conectados em série formando um circuito fechado por onde os dados circulam em uma única direção.", "Cada nó conecta-se diretamente a todos os outros nós da rede.", "Os dados são transmitidos por rádio frequência omnidirecional."],
+            correct: 1,
+            explanation: "Na topologia em anel, cada estação conecta-se a outras duas, formando um loop fechado de circulação de dados."
+        },
+        {
+            q: "Qual é a função de um Gateway Padrão (Default Gateway) configurado em um host de rede local?",
+            options: ["Traduzir endereços web em IP.", "Servir como ponto de saída para que o host envie pacotes destinados a outras redes externas (como a Internet).", "Armazenar cópias de segurança de arquivos locais.", "Distribuir endereços IP automáticos."],
+            correct: 1,
+            explanation: "O gateway padrão é o endereço do roteador local que permite aos dispositivos da LAN alcançarem redes fora de seu segmento."
+        },
+        {
+            q: "O que caracteriza um ataque de negação de serviço (DoS - Denial of Service)?",
+            options: ["Roubo de senhas bancárias por engenharia social.", "Sobrecarga intencional de recursos de um sistema ou rede para torná-lo indisponível aos usuários legítimos.", "Invasão física a servidores de banco de dados.", "Criptografia de arquivos para resgate financeiro (Ransomware)."],
+            correct: 1,
+            explanation: "O ataque DoS visa esgotar a largura de banda ou capacidade de processamento de um alvo, impedindo o acesso legítimo."
         }
     ];
 
     let currentQuiz = [], currentIndex = 0, userAnswers = [];
 
+    const startScreen = document.getElementById('screen-start');
+    const quizScreen = document.getElementById('screen-quiz');
+    const resultScreen = document.getElementById('screen-result');
+    const btnStart = document.getElementById('btn-start');
+    const btnNext = document.getElementById('btn-next');
+    const btnRestart = document.getElementById('btn-restart');
+
     function startQuiz() {
         currentQuiz = [...questionBank].sort(() => 0.5 - Math.random()).slice(0, 10);
         currentIndex = 0;
         userAnswers = [];
-        document.getElementById('screen-start').classList.remove('active');
-        document.getElementById('screen-result').classList.remove('active');
-        document.getElementById('screen-quiz').classList.add('active');
+        startScreen.classList.remove('active');
+        resultScreen.classList.remove('active');
+        quizScreen.classList.add('active');
         loadQuestion();
     }
 
@@ -431,15 +622,17 @@
             let li = document.createElement('li');
             li.className = 'option-item';
             li.innerHTML = `<div class="option-letter">${letters[idx]}</div> <span>${opt}</span>`;
-            li.onclick = () => {
+            
+            li.addEventListener('click', () => {
                 document.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
                 li.classList.add('selected');
                 userAnswers[currentIndex] = idx;
-                document.getElementById('btn-next').disabled = false;
-            };
+                btnNext.disabled = false;
+            });
+            
             opts.appendChild(li);
         });
-        document.getElementById('btn-next').disabled = true;
+        btnNext.disabled = true;
     }
 
     function nextQuestion() {
@@ -452,8 +645,8 @@
     }
 
     function showResults() {
-        document.getElementById('screen-quiz').classList.remove('active');
-        document.getElementById('screen-result').classList.add('active');
+        quizScreen.classList.remove('active');
+        resultScreen.classList.add('active');
 
         let correctCount = 0;
         let reviewHTML = '';
@@ -488,6 +681,10 @@
         document.getElementById('stat-incorrect').innerText = incorrectCount;
         document.getElementById('review-list').innerHTML = reviewHTML;
     }
+
+    btnStart.addEventListener('click', startQuiz);
+    btnNext.addEventListener('click', nextQuestion);
+    btnRestart.addEventListener('click', startQuiz);
 </script>
 
 </body>
