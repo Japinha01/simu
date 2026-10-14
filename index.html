@@ -39,7 +39,7 @@
 
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
         }
 
         .card {
@@ -86,9 +86,9 @@
         }
 
         .question-title {
-            font-size: 1.05rem;
+            font-size: 0.98rem;
             font-weight: 500;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             line-height: 1.5;
             color: var(--text-main);
         }
@@ -97,23 +97,24 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 24px;
         }
 
         .option-item {
             background-color: #1a253b;
             border: 1px solid #334155;
-            border-radius: 14px;
-            padding: 14px 16px;
+            border-radius: 12px;
+            padding: 12px 14px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
-            align-items: center;
-            gap: 14px;
-            font-size: 0.95rem;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.88rem;
             color: var(--text-main);
             user-select: none;
+            line-height: 1.4;
         }
 
         .option-item:active {
@@ -127,18 +128,19 @@
         }
 
         .option-letter {
-            width: 30px;
-            height: 30px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             background-color: #0f172a;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--primary);
             flex-shrink: 0;
             border: 1px solid #334155;
+            margin-top: 1px;
         }
 
         .option-item.selected .option-letter {
@@ -271,7 +273,7 @@
             <p>Baseado estritamente na obra de Edemilson Bay e Paulo Henrique Bluning (UNIASSELVI)</p>
         </header>
         <p style="margin-bottom: 24px; color: var(--text-muted); font-size: 0.9rem;">
-            Banco massivo expandido com 40 questões técnicas. Teste seus conhecimentos e estude os erros detalhadamente ao final!
+            Banco expandido contendo questões objetivas e de <strong>asserção-razão</strong> estilo ENADE. Teste seus conhecimentos e estude os erros ao final!
         </p>
         <button class="btn" id="btn-start">Iniciar Simulado</button>
     </div>
@@ -318,6 +320,67 @@
 
 <script>
     const questionBank = [
+        // --- QUESTÕES ORIGINAIS ---
+        {
+            q: "Sobre os modelos de arquitetura de redes, analise as asserções:<br><br><strong>Asserção I:</strong> O modelo OSI possui sete camadas bem definidas e serve como guia conceitual universal.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> O modelo TCP/IP consolidou as camadas de apresentação e sessão do OSI na camada de aplicação para uso na Internet.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 1,
+            explanation: "Ambas as afirmações são verdadeiras: o modelo OSI tem 7 camadas como referência teórica, e o TCP/IP agrupa camadas superiores do OSI na camada de aplicação. Contudo, o agrupamento do TCP/IP não é a justificativa lógica para o modelo OSI possuir 7 camadas."
+        },
+        {
+            q: "Sobre a camada de transporte, analise as asserções:<br><br><strong>Asserção I:</strong> O protocolo TCP assegura a entrega confiável, íntegra e sequenciada dos dados.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> O TCP utiliza conexão prévia (three-way handshake) e exige confirmações de recebimento (ACK), descartando a necessidade de retransmissão.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 2,
+            explanation: "A Asserção I é verdadeira. A Asserção II é falsa na parte final, pois o TCP *realiza* sim a retransmissão de pacotes corrompidos ou perdidos para garantir a confiabilidade."
+        },
+        {
+            q: "Sobre equipamentos de interconexão, analise as asserções:<br><br><strong>Asserção I:</strong> Os roteadores atuam na Camada de Rede (Camada 3), interligando redes distintas.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> Para encaminhar pacotes, o roteador analisa os endereços físicos MAC presentes na camada de enlace.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 2,
+            explanation: "A Asserção I é verdadeira. A Asserção II é falsa porque roteadores operam com endereços *lógicos* (IP). Quem analisa endereços físicos MAC são os switches."
+        },
+        {
+            q: "Sobre meios físicos de transmissão, analise as asserções:<br><br><strong>Asserção I:</strong> As fibras ópticas apresentam imunidade a interferências eletromagnéticas e baixa atenuação.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> A fibra óptica transporta dados por meio de pulsos de luz através de um núcleo de vidro ou plástico.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 0,
+            explanation: "Ambas são verdadeiras e a II justifica perfeitamente a I, pois a transmissão por luz evita indução de ruídos eletromagnéticos."
+        },
+        {
+            q: "Sobre protocolos de suporte ao IPv4, analise as asserções:<br><br><strong>Asserção I:</strong> O protocolo ARP é fundamental para o funcionamento das redes locais IPv4.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> Sua função principal é mapear e descobrir o endereço físico (MAC) correspondente a um IP na mesma rede.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 0,
+            explanation: "Ambas são verdadeiras e a II é a definição exata da finalidade do ARP, justificando sua importância na rede local."
+        },
         {
             q: "No modelo genérico de comunicação de dados, qual elemento é responsável por converter a informação em uma forma de sinal adequada para ser transportada pela rede?",
             options: ["Fonte", "Transmissor", "Receptor", "Destinatário"],
@@ -424,17 +487,6 @@
             explanation: "O Hub é um repetidor multiportas que repassa bits cegamente para todas as interfaces, compartilhando o domínio de colisão."
         },
         {
-            q: "Qual é a principal vantagem da Fibra Óptica em relação aos cabos metálicos tradicionais de par trançado?",
-            options: [
-                "Maior facilidade e menor custo de crimpagem manual de conectores.",
-                "Imunidade a interferências eletromagnéticas, menor atenuação de sinal e altíssima capacidade de largura de banda em longas distâncias.",
-                "Capacidade de alimentar eletricamente os dispositivos conectados (PoE nativo).",
-                "Ausência total de necessidade de blindagem mecânica."
-            ],
-            correct: 1,
-            explanation: "A fibra óptica transmite luz em vez de eletricidade, tornando-se imune a ruídos eletromagnéticos e permitindo altas taxas de transmissão."
-        },
-        {
             q: "Qual protocolo da camada de aplicação é utilizado especificamente para o envio e transferência de mensagens de correio eletrônico (e-mail) entre servidores?",
             options: ["HTTP", "FTP", "SMTP (Simple Mail Transfer Protocol)", "SNMP"],
             correct: 2,
@@ -493,12 +545,6 @@
             explanation: "A subcamada MAC controla como os dispositivos acessam o meio físico de transmissão para evitar colisões e gerencia os endereços físicos."
         },
         {
-            q: "Qual protocolo da camada de transporte garante a entrega confiável e ordenada de pacotes por meio de confirmações (ACK) e controle de fluxo?",
-            options: ["UDP", "TCP (Transmission Control Protocol)", "IP", "ICMP"],
-            correct: 1,
-            explanation: "O TCP é orientado à conexão e garante confiabilidade, retransmitindo dados perdidos e ordenando os pacotes."
-        },
-        {
             q: "Qual protocolo de transporte é não orientado à conexão, priorizando a velocidade em detrimento da garantia de entrega (ideal para streaming e VoIP)?",
             options: ["TCP", "UDP (User Datagram Protocol)", "HTTP", "FTP"],
             correct: 1,
@@ -509,12 +555,6 @@
             options: ["Aumento excessivo da velocidade de clock.", "Perda de intensidade ou enfraquecimento do sinal à medida que ele percorre o meio físico de transmissão.", "Interferência eletromagnética gerada por motores elétricos.", "Duplicação de pacotes na camada de enlace."],
             correct: 1,
             explanation: "A atenuação é a degradação e enfraquecimento natural da amplitude do sinal ao longo da distância do cabo ou meio."
-        },
-        {
-            q: "Qual é a função do protocolo ARP (Address Resolution Protocol) em redes IPv4?",
-            options: ["Converter nomes de domínios em endereços IP.", "Descobrir o endereço físico (MAC address) correspondente a um determinado endereço IP na rede local.", "Atribuir endereços IP dinamicamente.", "Rotear pacotes entre diferentes sub-redes."],
-            correct: 1,
-            explanation: "O ARP faz o mapeamento entre o endereço lógico (IP) e o endereço físico da placa de rede (MAC) na mesma rede local."
         },
         {
             q: "Quantos bits compõem um endereço IP versão 6 (IPv6)?",
@@ -546,47 +586,103 @@
             correct: 1,
             explanation: "O ICMP é usado por ferramentas de diagnóstico e relatórios de erro em redes IP, sendo a base do comando ping."
         },
+
+        // --- NOVAS QUESTÕES (ASSERÇÃO-RAZÃO E OUTRAS) ---
         {
-            q: "O que é a largura de banda de um canal de comunicação analógico?",
-            options: ["A velocidade máxima de download em Megabits por segundo.", "A faixa de frequências suportada pelo canal, medida em Hertz (Hz).", "O número total de usuários conectados simultaneamente.", "A quantidade de pacotes perdidos por segundo."],
-            correct: 1,
-            explanation: "Em termos físicos e analógicos, a largura de banda representa a diferença entre a maior e a menor frequência que o canal transmite, medida em Hertz."
+            q: "Sobre as versões do protocolo IP (Internet Protocol), analise as asserções:<br><br><strong>Asserção I:</strong> O protocolo IPv6 foi desenvolvido para substituir o IPv4 e resolver a escassez de IPs, expandindo o espaço de endereçamento de 32 bits para 128 bits.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> No IPv6, a fragmentação dos pacotes é realizada exclusivamente pelos roteadores intermediários para dar mais agilidade à transmissão na rede.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 2,
+            explanation: "A asserção I é correta, pois o IPv6 expandiu o endereçamento para 128 bits. A asserção II é falsa, pois no protocolo IPv6 os roteadores não realizam mais a fragmentação de pacotes; essa responsabilidade passou a ser exclusivamente do remetente original da informação."
         },
         {
-            q: "Qual é a função do protocolo FTP (File Transfer Protocol)?",
-            options: ["Navegar em páginas web interativas.", "Transferir arquivos entre computadores através de uma rede de forma estruturada.", "Enviar e-mails com anexos pesados.", "Gerenciar endereços IP dinâmicos."],
-            correct: 1,
-            explanation: "O FTP é um protocolo dedicado exclusivamente à transferência de arquivos entre clientes e servidores."
-        },
-        {
-            q: "O que significa a sigla URL na internet?",
-            options: ["Universal Route Locator", "Uniform Resource Locator (Localizador Uniforme de Recursos)", "User Registered Link", "Unified Relational Language"],
-            correct: 1,
-            explanation: "URL significa Uniform Resource Locator, sendo o endereço textual utilizado para localizar recursos na internet."
-        },
-        {
-            q: "Qual é a diferença fundamental entre cabos de fibra óptica Monomodo (SMF) e Multimodo (MMF)?",
-            options: ["A Monomodo possui núcleo extremamente fino permitindo um único feixe de luz para longas distâncias; a Multimodo possui núcleo maior com múltiplos feixes para curtas distâncias.", "A Multimodo é feita de cobre trançado e a Monomodo de plástico.", "A Monomodo não necessita de luz para transmitir dados.", "Não há diferenças técnicas significativas."],
+            q: "Sobre os equipamentos de comutação em redes locais, analise as asserções:<br><br><strong>Asserção I:</strong> A substituição de um Hub por um Switch (Layer 2) em uma rede local melhora significativamente o desempenho geral e elimina grande parte das colisões de rede.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> O Switch opera na Camada de Enlace realizando o chaveamento das interfaces baseado em uma tabela interna de endereços MAC, enviando os quadros de dados apenas para a porta do host de destino.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
             correct: 0,
-            explanation: "A fibra monomodo propaga um único modo de luz focado para grandes distâncias, enquanto a multimodo suporta múltiplos caminhos de luz para distâncias menores."
+            explanation: "Ambas as asserções são verdadeiras e a II justifica a I. O Switch opera na camada 2 (Enlace) e utiliza o endereço físico MAC para entregar o quadro diretamente à porta de destino. Isso impede que a informação seja espalhada para todas as portas (como faz o Hub), reduzindo colisões e otimizando o tráfego."
         },
         {
-            q: "O que define a topologia em Anel em redes de computadores?",
-            options: ["Todos os dispositivos conectam-se a um concentrador central.", "Os dispositivos são conectados em série formando um circuito fechado por onde os dados circulam em uma única direção.", "Cada nó conecta-se diretamente a todos os outros nós da rede.", "Os dados são transmitidos por rádio frequência omnidirecional."],
-            correct: 1,
-            explanation: "Na topologia em anel, cada estação conecta-se a outras duas, formando um loop fechado de circulação de dados."
+            q: "A respeito dos protocolos da camada de transporte, analise as asserções:<br><br><strong>Asserção I:</strong> O protocolo UDP (User Datagram Protocol) é o mais recomendado e amplamente utilizado em transmissões de áudio e vídeo em tempo real (streaming).<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> O UDP garante a entrega dos dados de forma confiável e ordenada, realizando o controle de congestionamento rigoroso através da conexão via 'three-way handshake'.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 2,
+            explanation: "A asserção I é verdadeira, pois a ausência de confirmações torna o UDP mais rápido, sendo ideal para aplicações de tempo real (RTP). A asserção II é falsa, pois o UDP é um protocolo não orientado à conexão, não faz handshake prévio e não garante a entrega, a ordem, nem faz controle de congestionamento."
         },
         {
-            q: "Qual é a função de um Gateway Padrão (Default Gateway) configurado em um host de rede local?",
-            options: ["Traduzir endereços web em IP.", "Servir como ponto de saída para que o host envie pacotes destinados a outras redes externas (como a Internet).", "Armazenar cópias de segurança de arquivos locais.", "Distribuir endereços IP automáticos."],
-            correct: 1,
-            explanation: "O gateway padrão é o endereço do roteador local que permite aos dispositivos da LAN alcançarem redes fora de seu segmento."
+            q: "Sobre os meios de transmissão ópticos, analise as asserções:<br><br><strong>Asserção I:</strong> As fibras ópticas do tipo monomodo alcançam distâncias significativamente maiores (dezenas de quilômetros) do que as fibras do tipo multimodo.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> Na fibra monomodo, um único feixe de sinal de luz viaja de forma direta no núcleo do cabo, sem sofrer múltiplas refrações ou reflexões variadas nas paredes.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 0,
+            explanation: "Ambas são verdadeiras e a II justifica perfeitamente a I. O feixe de luz viaja de forma direta no núcleo estreito da fibra monomodo, sofrendo menor atenuação e dispersão modal quando comparado aos vários feixes de luz da fibra multimodo."
         },
         {
-            q: "O que caracteriza um ataque de negação de serviço (DoS - Denial of Service)?",
-            options: ["Roubo de senhas bancárias por engenharia social.", "Sobrecarga intencional de recursos de um sistema ou rede para torná-lo indisponível aos usuários legítimos.", "Invasão física a servidores de banco de dados.", "Criptografia de arquivos para resgate financeiro (Ransomware)."],
+            q: "Considerando os modelos de referência OSI e TCP/IP, analise as asserções:<br><br><strong>Asserção I:</strong> O modelo de referência TCP/IP possui as camadas de Sessão e Apresentação muito bem definidas e separadas rigorosamente da camada de Aplicação.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> A rede Internet comercial e atual desenvolveu-se baseada historicamente no modelo TCP/IP.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 3,
+            explanation: "A asserção I é falsa, pois o modelo TCP/IP possui apenas quatro camadas e não inclui as camadas de Sessão e Apresentação (cujas funções foram incorporadas pela própria camada de Aplicação). A asserção II é verdadeira e reflete o modelo de arquitetura adotado pelo surgimento da Internet."
+        },
+        {
+            q: "Sobre tabelas de roteamento e comutadores (roteadores), analise as asserções:<br><br><strong>Asserção I:</strong> Em redes amplas compostas por topologias em anel ou links redundantes (backup), é fortemente recomendada a utilização exclusiva de rotas estáticas definidas manualmente pelo administrador.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> Os protocolos de roteamento dinâmico e autônomo (como OSPF ou BGP) realizam anúncios constantes entre os parceiros, recalculando e adaptando as rotas automaticamente em caso de falha de um link.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 3,
+            explanation: "A asserção I é falsa. Rotas estáticas não são recomendadas para redes com anel ou links de backup, pois exigiriam uma intervenção manual do administrador para mudar a rota a cada queda de link. A asserção II descreve exatamente o benefício e o funcionamento do roteamento dinâmico nessas topologias."
+        },
+        {
+            q: "Sobre a resolução de nomes na rede Internet (DNS), analise as asserções:<br><br><strong>Asserção I:</strong> O serviço de DNS é um componente crítico que traduz domínios alfanuméricos legíveis para humanos em endereços IP roteáveis por máquinas.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> A essência de funcionamento do DNS baseia-se em um banco de dados unificado, monolítico e centralizado localizado fisicamente nos Estados Unidos, que abriga os registros de todo o planeta.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
+            correct: 2,
+            explanation: "A asserção I é verdadeira. A asserção II é absolutamente falsa, pois o DNS funciona através de um esquema hierárquico e um sistema de bancos de dados distribuídos pelo mundo, interligados entre servidores raiz e servidores locais."
+        },
+        {
+            q: "Em relação ao processo de comutação em redes, analise as asserções:<br><br><strong>Asserção I:</strong> A comutação de pacotes otimiza o uso da banda passante, pois aloca o meio físico sob demanda sem a necessidade de reservar circuitos permanentes fixos e ociosos.<br><br><strong>PORQUE</strong><br><br><strong>Asserção II:</strong> Na comutação de pacotes, a fragmentação da mensagem e a análise do cabeçalho em cada nó roteador permite que os dados utilizem rotas alternativas, conferindo alta tolerância a falhas na rede.",
+            options: [
+                "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                "A asserção I é uma proposição falsa, e a asserção II é uma proposição verdadeira.",
+                "As asserções I e II são proposições falsas."
+            ],
             correct: 1,
-            explanation: "O ataque DoS visa esgotar a largura de banda ou capacidade de processamento de um alvo, impedindo o acesso legítimo."
+            explanation: "As duas asserções são afirmações técnicas corretas sobre as amplas vantagens da comutação de pacotes. Contudo, a II (existência de rotas alternativas/tolerância a falhas) não é a justificativa ou a causa da I (ausência de reserva dedicada da banda passante), configurando características distintas da mesma tecnologia."
         }
     ];
 
@@ -598,6 +694,8 @@
     const btnStart = document.getElementById('btn-start');
     const btnNext = document.getElementById('btn-next');
     const btnRestart = document.getElementById('btn-restart');
+
+    const alphabet = ['A', 'B', 'C', 'D', 'E'];
 
     function startQuiz() {
         currentQuiz = [...questionBank].sort(() => 0.5 - Math.random()).slice(0, 10);
@@ -612,16 +710,15 @@
     function loadQuestion() {
         let q = currentQuiz[currentIndex];
         document.getElementById('q-num').innerText = `Questão ${currentIndex + 1} de 10`;
-        document.getElementById('q-title').innerText = q.q;
+        document.getElementById('q-title').innerHTML = q.q;
         
         let opts = document.getElementById('q-options');
         opts.innerHTML = '';
         
-        const letters = ['A', 'B', 'C', 'D'];
         q.options.forEach((opt, idx) => {
             let li = document.createElement('li');
             li.className = 'option-item';
-            li.innerHTML = `<div class="option-letter">${letters[idx]}</div> <span>${opt}</span>`;
+            li.innerHTML = `<div class="option-letter">${alphabet[idx]}</div> <span>${opt}</span>`;
             
             li.addEventListener('click', () => {
                 document.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
@@ -650,15 +747,14 @@
 
         let correctCount = 0;
         let reviewHTML = '';
-        const letters = ['A', 'B', 'C', 'D'];
 
         currentQuiz.forEach((q, idx) => {
             let userAns = userAnswers[idx];
             let isCorrect = userAns === q.correct;
             if (isCorrect) correctCount++;
 
-            let userOptText = userAns !== undefined ? `${letters[userAns]}) ${q.options[userAns]}` : 'Não respondida';
-            let correctOptText = `${letters[q.correct]}) ${q.options[q.correct]}`;
+            let userOptText = userAns !== undefined ? `${alphabet[userAns]}) ${q.options[userAns]}` : 'Não respondida';
+            let correctOptText = `${alphabet[q.correct]}) ${q.options[q.correct]}`;
 
             reviewHTML += `
                 <div class="review-box ${isCorrect ? 'correct' : 'incorrect'}">
